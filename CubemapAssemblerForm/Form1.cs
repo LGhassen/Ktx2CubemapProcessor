@@ -41,7 +41,8 @@ namespace CubemapAssemblerForm
             Normal,
             Color,
             BiomeId,
-            BiomeControl
+            BiomeControl,
+            CloudSingleChannel
         }
 
         public enum FaceResolution
@@ -452,6 +453,11 @@ namespace CubemapAssemblerForm
             ExportMap(MapType.BiomeControl);
         }
 
+        private void exportCloudSingleChannelMapMenuStrip_Click(object sender, EventArgs e)
+        {
+            ExportMap(MapType.CloudSingleChannel);
+        }
+
         public void ExportMap(MapType mapType)
         {
             // Dispose old images
@@ -569,6 +575,16 @@ namespace CubemapAssemblerForm
                     faceArgs + " " +
                     $"\"{tempKtxPath}\"";
             }
+            else if (mapType == MapType.CloudSingleChannel)
+            {
+                args =
+                    "create --cubemap --generate-mipmap --mipmap-wrap clamp " +
+                    "--format R8_UNORM " +
+                    "--encode uastc --uastc-quality 3 --uastc-rdo " +
+                    "--assign-tf linear " +
+                    faceArgs + " " +
+                    $"\"{tempKtxPath}\"";
+            }
             else if (mapType == MapType.BiomeId || mapType == MapType.BiomeControl)
             {
                 args =
@@ -609,7 +625,9 @@ namespace CubemapAssemblerForm
         public void RunKtxTranscode(string tempKtxPath, string outputKtxPath, MapType mapType)
         {
             string targetFormat =
-                mapType == MapType.Normal ? "bc5" : "bc7";
+                mapType == MapType.Normal ? "bc5" :
+                mapType == MapType.CloudSingleChannel ? "bc4" :
+                "bc7";
 
             string args =
                 $"transcode --target {targetFormat} --zstd 20 " +
@@ -678,6 +696,13 @@ namespace CubemapAssemblerForm
                 encodeArgs =
                     "--t2 --cubemap --genmipmap " +
                     "--encode none --target_type RGBA " +
+                    "--assign_oetf linear ";
+            }
+            else if (mapType == MapType.CloudSingleChannel)
+            {
+                encodeArgs =
+                    "--t2 --cubemap --genmipmap " +
+                    "--encode uastc --target_type R " +
                     "--assign_oetf linear ";
             }
             else // Color

@@ -39,6 +39,7 @@
             exportColorMapMenuStrip = new ToolStripMenuItem();
             exportBiomeIdMapMenuStrip = new ToolStripMenuItem();
             exportBiomeControlManMenuStrip = new ToolStripMenuItem();
+            exportCloudSingleChannelMapMenuStrip = new ToolStripMenuItem();
             orientationToolStripMenuItem = new ToolStripMenuItem();
             equirectImportOptionsToolStripMenuItem = new ToolStripMenuItem();
             nearestNeighbourFilteringToolStripMenuItem = new ToolStripMenuItem();
@@ -117,7 +118,7 @@
             // 
             // saveToolStripMenuItem
             // 
-            saveToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exportHeightMapMenuStrip, exportNormalMapMenuStrip, exportColorMapMenuStrip, exportBiomeIdMapMenuStrip, exportBiomeControlManMenuStrip });
+            saveToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exportHeightMapMenuStrip, exportNormalMapMenuStrip, exportColorMapMenuStrip, exportBiomeIdMapMenuStrip, exportBiomeControlManMenuStrip, exportCloudSingleChannelMapMenuStrip });
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             saveToolStripMenuItem.Size = new Size(224, 26);
             saveToolStripMenuItem.Text = "Export";
@@ -126,37 +127,44 @@
             // exportHeightMapMenuStrip
             // 
             exportHeightMapMenuStrip.Name = "exportHeightMapMenuStrip";
-            exportHeightMapMenuStrip.Size = new Size(222, 26);
+            exportHeightMapMenuStrip.Size = new Size(270, 26);
             exportHeightMapMenuStrip.Text = "Height Map";
             exportHeightMapMenuStrip.Click += exportHeightMapMenuStrip_Click;
             // 
             // exportNormalMapMenuStrip
             // 
             exportNormalMapMenuStrip.Name = "exportNormalMapMenuStrip";
-            exportNormalMapMenuStrip.Size = new Size(222, 26);
+            exportNormalMapMenuStrip.Size = new Size(270, 26);
             exportNormalMapMenuStrip.Text = "Normal Map";
             exportNormalMapMenuStrip.Click += exportNormalMapMenuStrip_Click;
             // 
             // exportColorMapMenuStrip
             // 
             exportColorMapMenuStrip.Name = "exportColorMapMenuStrip";
-            exportColorMapMenuStrip.Size = new Size(222, 26);
+            exportColorMapMenuStrip.Size = new Size(270, 26);
             exportColorMapMenuStrip.Text = "Color Map";
             exportColorMapMenuStrip.Click += exportColorMapMenuStrip_Click;
             // 
             // exportBiomeIdMapMenuStrip
             // 
             exportBiomeIdMapMenuStrip.Name = "exportBiomeIdMapMenuStrip";
-            exportBiomeIdMapMenuStrip.Size = new Size(222, 26);
+            exportBiomeIdMapMenuStrip.Size = new Size(270, 26);
             exportBiomeIdMapMenuStrip.Text = "Biome ID Map";
             exportBiomeIdMapMenuStrip.Click += exportBiomeIdMapMenuStrip_Click;
             // 
             // exportBiomeControlManMenuStrip
             // 
             exportBiomeControlManMenuStrip.Name = "exportBiomeControlManMenuStrip";
-            exportBiomeControlManMenuStrip.Size = new Size(222, 26);
+            exportBiomeControlManMenuStrip.Size = new Size(270, 26);
             exportBiomeControlManMenuStrip.Text = "Biome Control Map";
             exportBiomeControlManMenuStrip.Click += exportBiomeControlManMenuStrip_Click;
+            // 
+            // exportCloudSingleChannelMapMenuStrip
+            // 
+            exportCloudSingleChannelMapMenuStrip.Name = "exportCloudSingleChannelMapMenuStrip";
+            exportCloudSingleChannelMapMenuStrip.Size = new Size(270, 26);
+            exportCloudSingleChannelMapMenuStrip.Text = "Cloud Single-Channel Map";
+            exportCloudSingleChannelMapMenuStrip.Click += exportCloudSingleChannelMapMenuStrip_Click;
             // 
             // orientationToolStripMenuItem
             // 
@@ -445,6 +453,7 @@
         private ToolStripMenuItem exportColorMapMenuStrip;
         private ToolStripMenuItem exportBiomeIdMapMenuStrip;
         private ToolStripMenuItem exportBiomeControlManMenuStrip;
+        private ToolStripMenuItem exportCloudSingleChannelMapMenuStrip;
         private PictureBox pictureBoxNegX;
         private PictureBox pictureBoxPosZ;
         private PictureBox pictureBoxPosX;

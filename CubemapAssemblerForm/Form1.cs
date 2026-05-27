@@ -47,6 +47,7 @@ namespace CubemapAssemblerForm
 
         public enum FaceResolution
         {
+            Auto = 0,
             Res1024 = 1024,
             Res2048 = 2048,
             Res4096 = 4096,
@@ -119,7 +120,7 @@ namespace CubemapAssemblerForm
         Image?[] outCubemapFaces = new Image[(int)CubemapFace.Num];
         public CubemapOrientation sourceOrientation = CubemapOrientation.Vulkan;
         public CubemapOrientation destOrientation = CubemapOrientation.Ccf;
-        public FaceResolution destFaceResolution = FaceResolution.Res4096;
+        public FaceResolution destFaceResolution = FaceResolution.Auto;
 
         // Only used for equirect import atm
         public bool nearestNeighbourFiltering = false;
@@ -378,6 +379,9 @@ namespace CubemapAssemblerForm
         {
             if (destOrientation == CubemapOrientation.Vulkan)
             {
+                for (int i = 0; i < cubemapFaces.Length; i++)
+                    outCubemapFaces[i] = cubemapFaces[i]?.Clone(ctx => { });
+
                 return;
             }
 
@@ -395,6 +399,34 @@ namespace CubemapAssemblerForm
                 outCubemapFaces = newFaces;
             }
         }
+
+        private void ApplyDestinationResolution(MapType mapType)
+        {
+            if (destFaceResolution == FaceResolution.Auto)
+                return;
+
+            int faceSize = (int)destFaceResolution;
+
+            Parallel.For(0, (int)CubemapFace.Num, i =>
+            {
+                Image? face = outCubemapFaces[i];
+                if (face == null || (face.Width == faceSize && face.Height == faceSize))
+                    return;
+
+                Image resized = face.Clone(ctx => ctx.Resize(new ResizeOptions
+                {
+                    Size = new SixLabors.ImageSharp.Size(faceSize, faceSize),
+                    Mode = ResizeMode.Stretch,
+                    Sampler = mapType == MapType.BiomeId
+                        ? KnownResamplers.NearestNeighbor
+                        : KnownResamplers.Bicubic
+                }));
+
+                face.Dispose();
+                outCubemapFaces[i] = resized;
+            });
+        }
+
         private Image Rotate(Image src, float degrees)
         {
             return src.Clone(ctx => ctx.Rotate(degrees));
@@ -483,6 +515,7 @@ namespace CubemapAssemblerForm
             Directory.CreateDirectory(tempDir);
 
             ConvertBasisToDestOrientation();
+            ApplyDestinationResolution(mapType);
 
             try
             {
@@ -792,62 +825,44 @@ namespace CubemapAssemblerForm
 
         private void destFaceRes1024_Click(object sender, EventArgs e)
         {
-            destFaceResolution = FaceResolution.Res1024;
-            destFaceRes1024.Checked = true;
-
-            // Uncheck others
-            destFaceRes2048.Checked = false;
-            destFaceRes4096.Checked = false;
-            destFaceRes8192.Checked = false;
-            destFaceRes16384.Checked = false;
+            SelectDestinationResolution(FaceResolution.Res1024);
         }
 
         private void destFaceRes2048_Click(object sender, EventArgs e)
         {
-            destFaceResolution = FaceResolution.Res2048;
-            destFaceRes2048.Checked = true;
-
-            // Uncheck others
-            destFaceRes1024.Checked = false;
-            destFaceRes4096.Checked = false;
-            destFaceRes8192.Checked = false;
-            destFaceRes16384.Checked = false;
+            SelectDestinationResolution(FaceResolution.Res2048);
         }
 
         private void destFaceRes4096_Click(object sender, EventArgs e)
         {
-            destFaceResolution = FaceResolution.Res4096;
-            destFaceRes4096.Checked = true;
-
-            // Uncheck others
-            destFaceRes1024.Checked = false;
-            destFaceRes2048.Checked = false;
-            destFaceRes8192.Checked = false;
-            destFaceRes16384.Checked = false;
+            SelectDestinationResolution(FaceResolution.Res4096);
         }
 
         private void destFaceRes8192_Click(object sender, EventArgs e)
         {
-            destFaceResolution = FaceResolution.Res8192;
-            destFaceRes8192.Checked = true;
-
-            // Uncheck others
-            destFaceRes1024.Checked = false;
-            destFaceRes2048.Checked = false;
-            destFaceRes4096.Checked = false;
-            destFaceRes16384.Checked = false;
+            SelectDestinationResolution(FaceResolution.Res8192);
         }
 
         private void destFaceRes16384_Click(object sender, EventArgs e)
         {
-            destFaceResolution = FaceResolution.Res16384;
-            destFaceRes16384.Checked = true;
+            SelectDestinationResolution(FaceResolution.Res16384);
+        }
 
-            // Uncheck others
-            destFaceRes1024.Checked = false;
-            destFaceRes2048.Checked = false;
-            destFaceRes4096.Checked = false;
-            destFaceRes8192.Checked = false;
+        private void destFaceResAuto_Click(object sender, EventArgs e)
+        {
+            SelectDestinationResolution(FaceResolution.Auto);
+        }
+
+        private void SelectDestinationResolution(FaceResolution resolution)
+        {
+            destFaceResolution = resolution;
+
+            destFaceResAuto.Checked = resolution == FaceResolution.Auto;
+            destFaceRes1024.Checked = resolution == FaceResolution.Res1024;
+            destFaceRes2048.Checked = resolution == FaceResolution.Res2048;
+            destFaceRes4096.Checked = resolution == FaceResolution.Res4096;
+            destFaceRes8192.Checked = resolution == FaceResolution.Res8192;
+            destFaceRes16384.Checked = resolution == FaceResolution.Res16384;
         }
 
         

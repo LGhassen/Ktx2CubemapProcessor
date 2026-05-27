@@ -50,6 +50,7 @@
             orientationDestVulkanCheckbox = new ToolStripMenuItem();
             orientationDestCcfCheckbox = new ToolStripMenuItem();
             destinationResolutionToolStripMenuItem = new ToolStripMenuItem();
+            destFaceResAuto = new ToolStripMenuItem();
             destFaceRes1024 = new ToolStripMenuItem();
             destFaceRes2048 = new ToolStripMenuItem();
             destFaceRes4096 = new ToolStripMenuItem();
@@ -235,10 +236,19 @@
             // 
             // destinationResolutionToolStripMenuItem
             // 
-            destinationResolutionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { destFaceRes1024, destFaceRes2048, destFaceRes4096, destFaceRes8192, destFaceRes16384 });
+            destinationResolutionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { destFaceResAuto, destFaceRes1024, destFaceRes2048, destFaceRes4096, destFaceRes8192, destFaceRes16384 });
             destinationResolutionToolStripMenuItem.Name = "destinationResolutionToolStripMenuItem";
             destinationResolutionToolStripMenuItem.Size = new Size(254, 26);
             destinationResolutionToolStripMenuItem.Text = "Destination Resolution";
+            // 
+            // destFaceResAuto
+            // 
+            destFaceResAuto.Checked = true;
+            destFaceResAuto.CheckState = CheckState.Checked;
+            destFaceResAuto.Name = "destFaceResAuto";
+            destFaceResAuto.Size = new Size(132, 26);
+            destFaceResAuto.Text = "Auto";
+            destFaceResAuto.Click += destFaceResAuto_Click;
             // 
             // destFaceRes1024
             // 
@@ -256,8 +266,6 @@
             // 
             // destFaceRes4096
             // 
-            destFaceRes4096.Checked = true;
-            destFaceRes4096.CheckState = CheckState.Checked;
             destFaceRes4096.Name = "destFaceRes4096";
             destFaceRes4096.Size = new Size(132, 26);
             destFaceRes4096.Text = "4096";
@@ -469,6 +477,7 @@
         private ToolStripMenuItem equirectImportOptionsToolStripMenuItem;
         private ToolStripMenuItem nearestNeighbourFilteringToolStripMenuItem;
         private ToolStripMenuItem destinationResolutionToolStripMenuItem;
+        private ToolStripMenuItem destFaceResAuto;
         private ToolStripMenuItem destFaceRes1024;
         private ToolStripMenuItem destFaceRes2048;
         private ToolStripMenuItem destFaceRes4096;

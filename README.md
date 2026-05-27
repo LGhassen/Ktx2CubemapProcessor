@@ -41,8 +41,8 @@ Exports as BC4, mipmaps, linear.
 ### Destination Orientation
 The orientation to transform the cubemap into when exporting. Options are OpenGL or KSA CCF.
 
-### Destination Resolution (Currently unused)
-The resolution for each exported cubemap face. Currently unused, and will export based on whatever the import resolution was. For equirectangular textures, this will be 1/4 the height.
+### Destination Resolution
+The resolution for each exported cubemap face. Auto keeps the imported face resolution. For equirectangular textures, Auto exports each cubemap face at source image height / 2. Fixed values resize each exported face to the selected square resolution before KTX2 creation.
 
 ## Credit
 This project depends on ImageSharp (Six Labors)
